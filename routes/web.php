@@ -65,6 +65,8 @@ Route::middleware(['auth', 'company'])->prefix('company')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'candidate'])->group(function () {
+    Route::get('/jobs', [PublicJobController::class, 'index'])->name('public.jobs.index');
+    Route::get('/jobs/{job}', [PublicJobController::class, 'show'])->name('public.jobs.show');
     Route::post('/jobs/{job}/apply', [ApplicationController::class, 'store'])->name('jobs.apply');
 });
 
@@ -73,8 +75,9 @@ Route::middleware(['auth', 'candidate'])->group(function () {
 | Rotte pubbliche per consultare offerte (accessibili a tutti)
 |--------------------------------------------------------------------------
 */
-Route::get('/jobs', [PublicJobController::class, 'index'])->name('public.jobs.index');
-Route::get('/jobs/{job}', [PublicJobController::class, 'show'])->name('public.jobs.show');
+
+
+
 
 Route::middleware(['auth', 'company'])->prefix('company')->group(function () {
     Route::resource('jobs', JobController::class)->names([
@@ -97,4 +100,9 @@ Route::put('/jobs/{job}/applications/{application}', [\App\Http\Controllers\Comp
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/jobs', [\App\Http\Controllers\AdminJobModerationController::class, 'index'])->name('admin.jobs.index');
     Route::put('/jobs/{job}/approve', [\App\Http\Controllers\AdminJobModerationController::class, 'approve'])->name('admin.jobs.approve');
+    Route::put('/jobs/{job}/reject', [\App\Http\Controllers\AdminJobModerationController::class, 'reject'])->name('admin.jobs.reject');
+    Route::get('/jobs/rejected', [\App\Http\Controllers\AdminJobModerationController::class, 'getRejectedJobs'])->name('admin.jobs.rejected');
+    Route::put('/jobs/{job}/reapprove', [\App\Http\Controllers\AdminJobModerationController::class, 'reapprove'])->name('admin.jobs.reapprove');
 });
+
+

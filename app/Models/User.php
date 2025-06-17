@@ -41,21 +41,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
-    ];
+    protected $hidden = ['password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret'];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array<int, string>
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    protected $appends = ['profile_photo_url'];
 
     /**
      * Get the attributes that should be cast.
@@ -69,14 +62,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function isCompany()
+    {
+        return $this->role === 'company';
+    }
+
     public function jobs()
-        {
-            return $this->hasMany(Job::class);
-        }
+    {
+        return $this->hasMany(Job::class);
+    }
 
-        public function applications()
-        {
-            return $this->hasMany(Application::class);
-        }
-
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

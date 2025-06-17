@@ -26,7 +26,11 @@ class ApplicationController extends Controller
             ->first();
 
         if ($existingApplication) {
-           return back()->with('error_application', 'Ti sei già candidato a questo annuncio.');
+            $existingApplication->update([
+                'cover_letter' => $request->cover_letter,
+                'cv_path' => $cvPath,
+            ]);
+           return back()->with('application_updated','La tua candidatura è stata aggiornata con successo!');
         }
        $application = Application::create([
             'job_id' => $job->id,

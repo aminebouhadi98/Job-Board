@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJobRequest;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -20,15 +21,12 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreJobRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string',
-            'contract_type' => 'required|string',
-            'salary' => 'nullable|integer',
-        ]);
+
+        $data = $request->validated();
+
+        $data['is_approved'] = $request->has('is_approved') ? $request->boolean('is_approved') : 0;
 
         auth()->user()->jobs()->create($data);
 

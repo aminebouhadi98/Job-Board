@@ -6,13 +6,15 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job extends Model
     {
          use HasFactory;
+
         protected $table = 'job_listings';
         protected $fillable = [
-            'title', 'description', 'location', 'contract_type', 'salary','is_approved'
+            'title', 'description', 'location', 'contract_type', 'salary','is_approved','is_deleted'
         ];
 
         public function user()
@@ -29,5 +31,4 @@ class Job extends Model
     {
         return $this->hasMany(Application::class);
     }
-
 }
